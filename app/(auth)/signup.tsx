@@ -12,6 +12,7 @@ import {
 import { useRouter } from 'expo-router';
 import { useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { LinearGradient } from 'expo-linear-gradient';
 import { useAuth } from '@/context/auth';
 import { Colors, BorderRadius, Spacing } from '@/constants/theme';
 
@@ -86,10 +87,10 @@ export default function SignupScreen() {
           {/* Logo / Title */}
           <View style={styles.logoArea}>
             <View style={styles.iconContainer}>
-              <Text style={styles.iconEmoji}>✨</Text>
+              <Text style={styles.iconEmoji}>🐍</Text>
             </View>
             <Text style={styles.appTitle}>Create Account</Text>
-            <Text style={styles.appSubtitle}>Start discovering your next obsession</Text>
+            <Text style={styles.appSubtitle}>start discovering your next obsession</Text>
           </View>
 
           {/* Form */}
@@ -149,16 +150,23 @@ export default function SignupScreen() {
             ) : null}
 
             <TouchableOpacity
-              style={[styles.primaryButton, isLoading && styles.primaryButtonDisabled]}
+              style={[styles.primaryButtonWrapper, isLoading && styles.primaryButtonDisabled]}
               onPress={handleSignup}
               disabled={isLoading}
               activeOpacity={0.85}
             >
-              {isLoading ? (
-                <ActivityIndicator color={Colors.background} />
-              ) : (
-                <Text style={styles.primaryButtonText}>Create Account</Text>
-              )}
+              <LinearGradient
+                colors={['#FFD700', '#C9A84C', '#A8893A']}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 0 }}
+                style={styles.primaryButton}
+              >
+                {isLoading ? (
+                  <ActivityIndicator color={Colors.background} />
+                ) : (
+                  <Text style={styles.primaryButtonText}>Create Account</Text>
+                )}
+              </LinearGradient>
             </TouchableOpacity>
           </View>
 
@@ -205,29 +213,32 @@ const styles = StyleSheet.create({
   iconContainer: {
     width: 80,
     height: 80,
-    borderRadius: BorderRadius.xl,
+    borderRadius: 40,
     backgroundColor: Colors.goldSubtle,
-    borderWidth: 1,
-    borderColor: Colors.gold,
+    borderWidth: 1.5,
+    borderColor: Colors.goldBorder,
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: Spacing.md,
+    marginBottom: Spacing.lg,
   },
   iconEmoji: {
-    fontSize: 36,
+    fontSize: 38,
   },
   appTitle: {
     fontSize: 28,
     fontWeight: '800',
-    color: Colors.text,
+    color: Colors.gold,
     textAlign: 'center',
-    letterSpacing: -0.5,
+    letterSpacing: 0.5,
+    textTransform: 'uppercase',
   },
   appSubtitle: {
-    fontSize: 14,
+    fontSize: 13,
     color: Colors.textSecondary,
     marginTop: Spacing.sm,
     textAlign: 'center',
+    letterSpacing: 1.5,
+    textTransform: 'lowercase',
   },
   form: {
     gap: 0,
@@ -243,7 +254,7 @@ const styles = StyleSheet.create({
   input: {
     backgroundColor: Colors.card,
     borderWidth: 1,
-    borderColor: Colors.border,
+    borderColor: Colors.goldBorder,
     borderRadius: BorderRadius.md,
     paddingHorizontal: Spacing.md,
     paddingVertical: 15,
@@ -279,21 +290,29 @@ const styles = StyleSheet.create({
     color: Colors.error,
     fontSize: 14,
   },
-  primaryButton: {
-    backgroundColor: Colors.gold,
-    borderRadius: BorderRadius.md,
-    paddingVertical: 17,
-    alignItems: 'center',
+  primaryButtonWrapper: {
     marginTop: Spacing.lg,
+    borderRadius: BorderRadius.md,
+    shadowColor: '#FFD700',
+    shadowOpacity: 0.45,
+    shadowRadius: 12,
+    shadowOffset: { width: 0, height: 4 },
+    elevation: 8,
+  },
+  primaryButton: {
+    borderRadius: BorderRadius.md,
+    paddingVertical: 18,
+    alignItems: 'center',
   },
   primaryButtonDisabled: {
-    opacity: 0.6,
+    opacity: 0.5,
   },
   primaryButtonText: {
-    color: Colors.background,
-    fontSize: 16,
-    fontWeight: '700',
-    letterSpacing: 0.3,
+    color: '#0A0A0A',
+    fontSize: 15,
+    fontWeight: '800',
+    letterSpacing: 1.5,
+    textTransform: 'uppercase',
   },
   footer: {
     flexDirection: 'row',

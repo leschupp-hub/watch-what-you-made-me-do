@@ -5,14 +5,20 @@ export const Colors = {
   card: '#1A1A1A',
   cardElevated: '#222222',
 
-  // Gold accent
-  gold: '#F5C518',
-  goldDark: '#C9A200',
-  goldSubtle: 'rgba(245, 197, 24, 0.12)',
+  // Gold accent — champagne/Reputation-era gold
+  gold: '#C9A84C',
+  goldBright: '#FFD700',
+  goldDark: '#A8893A',
+  goldSubtle: 'rgba(201, 168, 76, 0.12)',
+  goldBorder: 'rgba(201, 168, 76, 0.35)',
+
+  // Silver accent — glittery mixed-metal
+  silver: '#C0C0C0',
+  silverSubtle: 'rgba(192, 192, 192, 0.15)',
 
   // Text
   text: '#FFFFFF',
-  textSecondary: '#9B9B9B',
+  textSecondary: '#888888',
   textMuted: '#555555',
 
   // Semantic
@@ -22,13 +28,13 @@ export const Colors = {
 
   // UI
   border: '#2A2A2A',
-  borderFocused: '#F5C518',
+  borderFocused: '#C9A84C',
 
   // Tab bar
-  tabBar: '#0F0F0F',
+  tabBar: '#0A0A0A',
   tabBarBorder: '#1A1A1A',
-  tabBarActive: '#F5C518',
-  tabBarInactive: '#555555',
+  tabBarActive: '#C9A84C',
+  tabBarInactive: '#444444',
 };
 
 export const Spacing = {

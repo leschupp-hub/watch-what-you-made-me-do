@@ -10,9 +10,10 @@ const client = new Anthropic({ apiKey, dangerouslyAllowBrowser: true });
 export interface Recommendation {
   id: string;
   title: string;
-  type: 'movie' | 'tv show';
+  type: 'movie' | 'tv show' | 'book';
   genre: string;
   duration: string;
+  rating?: string;
   explanation: string;
   savedAt?: number;
 }
@@ -21,32 +22,41 @@ export async function getRecommendations(
   mood: string,
   genres: string[],
   timeAvailable: string,
+  options?: { nostalgiaMode?: boolean },
 ): Promise<Recommendation[]> {
   const genreText = genres.length > 0 ? genres.join(', ') : 'No specific preference';
 
-  const prompt = `You are a TV show and movie recommendation expert. Based on the user's mood, genre preferences, and available time, suggest 3-5 perfectly tailored TV shows or movies.
+  const extraRules: string[] = [];
+  if (options?.nostalgiaMode) {
+    extraRules.push('- NOSTALGIA MODE is ON: Only recommend movies and TV shows originally released between 1990 and 2005 (inclusive). No exceptions.');
+  }
+
+  const prompt = `You are a TV show, movie, and book recommendation expert. Return EXACTLY 4 recommendations: exactly 3 movies/TV shows followed by exactly 1 book.
 
 User's current mood: ${mood}
 Genre preferences: ${genreText}
 Available time: ${timeAvailable}
 
-Return ONLY a valid JSON array (no markdown, no code blocks, no extra text) with 3-5 recommendations in this exact format:
+Return ONLY a valid JSON array (no markdown, no code blocks, no extra text) with EXACTLY 4 items in this exact format:
 [
   {
     "title": "Exact Title",
     "type": "movie",
     "genre": "Primary Genre",
     "duration": "e.g. 1h 52m or ~45 min/episode",
+    "rating": "e.g. PG-13",
     "explanation": "2-3 sentences explaining specifically why this matches their current mood and preferences"
   }
 ]
 
 Rules:
-- "type" must be exactly "movie" or "tv show" (lowercase)
-- Mix movies and TV shows when appropriate
-- Consider the available time (avoid 3-hour films if they only have 30 min)
+- Items 1–3 must have "type" of exactly "movie" or "tv show" (lowercase)
+- Item 4 (the last item) must have "type": "book" — choose a book whose emotional tone deeply matches the user's mood; set "duration" to estimated reading time (e.g. "~8 hours"); set "rating" to target audience (e.g. "All Ages", "Teen", "Adult")
+- For movies/TV shows: "rating" must use the official US content rating (G, PG, PG-13, R, NC-17, TV-Y, TV-Y7, TV-G, TV-PG, TV-14, TV-MA)
+- Mix movies and TV shows for the first 3 items when appropriate
+- Consider the available time for movies/shows (avoid 3-hour films if they only have 30 min)
 - Make explanations personal and specific to their stated mood
-- Only suggest well-known, highly-rated content`;
+- Only suggest well-known, highly-rated content${extraRules.length > 0 ? '\n' + extraRules.join('\n') : ''}`;
 
   console.log('[Anthropic] Sending request — model: claude-haiku-4-5-20251001, mood:', mood, '| genres:', genreText, '| time:', timeAvailable);
 

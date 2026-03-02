@@ -6,6 +6,7 @@ import { useEffect } from 'react';
 import 'react-native-reanimated';
 
 import { AuthProvider, useAuth } from '@/context/auth';
+import { Colors } from '@/constants/theme';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -28,7 +29,7 @@ function RootLayoutNav() {
   }, [user, segments, isLoading]);
 
   return (
-    <Stack screenOptions={{ headerShown: false }}>
+    <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: Colors.background } }}>
       <Stack.Screen name="(auth)" />
       <Stack.Screen name="(tabs)" />
     </Stack>
